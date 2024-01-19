@@ -8,15 +8,16 @@ typedef struct no {
 
 tree *insert(tree *raiz, int number);
 tree *imprimir(tree *raiz);
+tree *search(tree *raiz, int number);
 
 int main() {
    
-   tree *raiz = NULL;
+   tree *busca, *raiz = NULL;
    int escolha = -1;
    int number;
    
    while (escolha != 0) {
-      printf("\n[0] sair\n[1] inserir\n[2] imprimir\n");
+      printf("\n[0] sair\n[1] inserir\n[2] imprimir\n[3] buscar\n");
       scanf("%d", &escolha);
       
       switch(escolha) {
@@ -31,6 +32,16 @@ int main() {
             printf("\narvore:");
             imprimir(raiz);
             break;
+	 case 3:
+    	    printf("buscar: ");
+    	    scanf("%d", &number);
+    	    busca = search(raiz, number);
+    	    if (busca)
+               printf("\nnumero %d encontrado\n", busca->val);
+    	    else
+               printf("\nnumero nao encontrado\n");
+    	    break;
+            
       }
       
    }
@@ -48,7 +59,7 @@ tree *insert(tree *raiz, int number) {
      aux->dir = NULL;
      return aux;
    } else {
-      if (raiz->val < number)
+      if (raiz->val > number)
       	 raiz->esq = insert(raiz->esq, number);
       else
          raiz->dir = insert(raiz->dir, number);
@@ -64,5 +75,21 @@ tree *imprimir(tree *raiz) {
       printf(" %d ", raiz->val);
       imprimir(raiz->dir);
    }
+
+}
+
+tree *search(tree *raiz, int number) {
+
+   if (raiz) {
+      if (number == raiz->val) {
+         return raiz;
+      } else if (number < raiz->val) {
+   	 return search(raiz->esq, number);
+      } else {
+   	 return search(raiz->dir, number);
+      }
+   }
+   
+   return NULL;
 
 }
